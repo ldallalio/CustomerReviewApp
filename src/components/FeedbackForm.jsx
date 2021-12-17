@@ -5,7 +5,7 @@ import { div } from 'prelude-ls'
 import RatingSelect from './RatingSelect'
 
 
-function FeedbackForm() {
+function FeedbackForm({handleAdd}) {
     const [text, setText] = useState('')
     const [rating, setRating] = useState('')
     const [btnDisabled, setBtnDisabled] = useState(true)
@@ -25,9 +25,23 @@ function FeedbackForm() {
         setText(event.target.value)
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if(text.trim().length > 10) {
+            const newFeedback = {
+                text,
+                rating,
+            }
+            handleAdd(newFeedback)
+
+            setText('')
+            setBtnDisabled(true)
+        }
+    }
+
     return (
         <Card>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <h2>How would you rate your service with us?</h2>
                 <RatingSelect select={(rating) => setRating(rating)} />
                 <div className="input-group">
